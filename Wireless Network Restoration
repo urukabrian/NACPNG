@@ -1,0 +1,186 @@
+import sys
+import time
+import clock
+import datetime
+import smtplib
+import os
+from time import sleep
+from __future__ import print_function
+from netmiko import ConnectHandler
+
+
+platform = 'cisco_ios'
+username = input("Enter Identity Services Engine Username:")
+password = input("Enter Identity Services Engine Password:")
+ip = input("Enter Identity Services Engine Address:")
+delay = input("Specify Delay Time (Seconds):")
+n = input("Specify number of access attempts:")
+nc = input("Specify number of configuration attempts:")
+commands = "D:/The Path of The Jedi/Python/Scripts/Production/configurations/switch_configurations/bulk/configure_ftp.txt"
+alpha = input("Please Specify Cpmaparision File Number 1:")
+bravo = input("Please Specify Cpmaparision File Number 2:")
+ntp = "Attempting to sync NTP via terminal"
+gui = "Attempting to sync NTP via the Web GUI"
+reboot = "Identity Services Engine is now being restared. NTP sync via terminal and GUI have both been unsuccessfull."
+terminal_success = "NTP has been sucessfully synced via terminal, no need for gui use or a reboot"
+gui_success = "NTP has been sucessfully synced via web gui, do note terminal syncing was unsuccessfull"
+unsuccessfull = "Script now terminated, Identity Services Engine clock was resynced with domain NTP clock via terminal (5 times), \
+via Web GUI (5 times) and restarted (5times) but clocks are still out of sync. Suggest a manual resyncing of clocks."
+offine = "Identity Services Engine is Offline"
+online = "Identity Services Engine is Online. Proceeding With Clock Syncing Now!"
+
+while count < n
+	print ('Access Iteration '+[count])
+	count = count + 1
+	wait(delay)
+	else print(offline)
+print(online)
+exit()
+
+while count < n
+	print ('Configuration Iteration '+[count])
+	show_clock()
+	print_sys_time_to_file()
+	compare()
+	count = count + 1
+		if count < 5
+			print("Count Less than 5")
+			config()
+		elif count < 10
+			print("Count Less than 10")
+			web_gui()
+		elif count < 12
+			print("Count Less than 12")
+			reload_device()
+			wait(delay)
+		elif count == 12
+			print("Count Is Now At 12")
+			break
+exit()
+
+def wait():
+	# CODE EXEUTION
+	print('Delaying for {delay} seconds')
+	sleep(delay)
+	exit()
+
+def ping():
+	# CODE EXECUTION
+	print('Pinging Identity Services Engine with ip address {ip}')
+	exit()
+
+def show_clock():
+	# CODE EXECUTION
+	print('Printing Identity Services Engine Clock')
+	fd = open(r'ise_clock.txt', 'w')
+	print('19:10')
+	fd.close()
+	exit()
+
+def config():
+	# COMMANDS
+	print('Setting Clock On Identity Services Engine with ip {ip}')
+	exit()
+
+def reload_device():
+	# CODE EXECUTION
+	print('Reloading Identity Services Engine with ip {ip} Now')
+	exit()
+
+def web_gui():
+	# CODE EXECUTION
+	print('Setting Clock and NTP parameters of Identity Services Engine with ip {ip} via the Web Gui Now')
+	exit()
+
+def print_sys_time_to_file():
+	print('Printing System Clock')
+	fd = open(r'sys_clock.txt', 'w')
+	print('19:10')
+	fd.close()
+	exit()
+
+def compare():
+	# CODE EXECUTION
+		with open('{alpha}') as one:
+		with open('{bravo}') as two:
+			if one == two:
+				print("Match")
+				pass
+			else print("No Match")
+		exit()	
+
+def count():
+	# CODE EXECUTION
+	iteration = 0
+		while iteration < n:
+			iteration = iteration + 1
+			wait(delay)
+
+
+
+
+
+def wait():
+	# CODE EXEUTION
+	sleep(delay)
+	exit()
+
+def ping():
+	# CODE EXECUTION
+	check = os.popen(f"ping {ip}").read()
+	if "bytes=32" in check:
+		print(online)
+		pass
+	else:
+		print(offline)
+	exit()
+
+def show_clock():
+	# CODE EXECUTION
+	print('Printing Identity Services Engine Clock')
+	fd = open(r'ise_clock.txt', 'w')
+	old_stdout = sys.stdout   
+	sys.stdout = fd
+	net_connect = ConnectHandler(device_type=platform, ip=ip, username=username, password=password)
+	output = net_connect.send_command('show clock')
+	print(output)
+	fd.close()
+	exit()
+
+def config():
+	# COMMANDS
+	with open(commands) as configure:
+		configure = f.read().splitlines()
+	# CODE EXECUTION
+	net_connect = ConnectHandler(device_type=platform, ip=ip, username=username, password=password)
+	output = device.send_config_set(configure)
+	output += net_connect.save_config()
+	exit()
+
+def reload_device():
+	# CODE EXECUTION
+	print('Reloading Identity Services Engine Now')
+	net_connect = ConnectHandler(device_type=platform, ip=ip, username=username, password=password)
+	output = net_connect.send_command('reload')
+	output = net_connect.send_command('y\n')
+	exit()
+
+def web_gui():
+	# CODE EXECUTION
+
+def compare():
+	# CODE EXECUTION
+		with open(alpha) as one:
+		with open(beta) as two:
+			if aplha == beta:
+				pass
+			else print("Clocks do not match")
+		exit()	
+
+def count():
+	# CODE EXECUTION
+	iteration = 0
+		while iteration < n:
+			iteration = iteration + 1
+
+
