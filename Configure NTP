@@ -1,0 +1,33 @@
+from __future__ import print_function
+from netmiko import ConnectHandler
+
+# CONSTANTS
+un = ("Username:")
+pwd = ("Password:")
+
+platform = 'cisco_ios'
+username = 'un'
+password = 'pwd'
+
+# COMMANDS
+with open('configure_ntp.txt') as a:
+	configure_ntp = a.read().splitlines()
+print(configure_ntp)
+
+# DEVICES
+with open('all_pmia_switches.txt') as b:
+	pmia_switches = b.read().splitlines()
+print(pmia_switches)
+
+# CODE EXECUTION
+for switch in pmia_switches:
+	net_connect = ConnectHandler(device_type=platform, ip=switch, username=username, password=password)
+	print('Working on', switch)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = net_connect.send_command('show ntp associations')
+	output = net_connect.send_config_set(configure_ntp)
+	output += net_connect.save_config()
+	print(output)
+
+exit()
