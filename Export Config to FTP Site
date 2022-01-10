@@ -1,0 +1,35 @@
+from __future__ import print_function
+from netmiko import ConnectHandler
+
+# CONSTANTS
+un = input("Username:")
+pwd = input("Password:")
+ftp_server = input("FTP Server Address:")
+
+platform = 'cisco_ios'
+username = 'un'
+password = 'pwd'
+
+# COMMANDS
+with open('export_config_via_ftp.txt') as a:
+	export_config_via_ftp = a.read().splitlines()
+print(export_config_via_ftp)
+
+# DEVICES
+with open('all_pmia_switches.txt') as b:
+	pmia_switches = b.read().splitlines()
+print(pmia_switches)
+
+# CODE EXECUTION
+for switch in pmia_switches:
+	net_connect = ConnectHandler(device_type=platform, ip=switch, username=username, password=password)
+	print('Working on', switch)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = net_connect.send_command_expect('copy run ftp:', expect_string='Address or name of remote host []?', delay_factor=30)
+	output = net_connect.send_command(''ftp_server', expect_string='Destination filename', delay_factor=30)
+	output = net_connect.send_command('\n')
+	output = net_connect.send_command(switch)
+	print(output)
+
+exit()
