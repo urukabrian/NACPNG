@@ -1,0 +1,205 @@
+from __future__ import print_function
+import csv
+import smtplib
+import ssl
+import os
+from time import sleep
+
+
+port = 587  # For starttls
+smtp_server = "mail.nac.com.pg"
+# user = input("Type your username and press enter:")
+# password = input("Type your password and press enter:")
+user = 'buruka'
+password = 'Delta@170988#lowdel'
+sender_email = user + '@nac.com.pg'
+# sender_email = "{user}@nac.com.pg"
+receiver_email = "itservicedesk@nac.com.pg"
+
+# TERMINAL OUTPUTS
+node_notification = """\
+Gate 18 CCTV node is Offline ands that includes GH010, GH011 and Gate 18 Subscriber Module
+"""
+
+# Emails
+gate_18_Camera_1 = """\
+Subject: Camera GH010 Offline
+
+
+Camera GH010 is currently offline.
+
+Camera is offline due the solar battery at the Gate 18 CCTV node being depleted of its charge.
+Camera should be restored after enough sunlight recharges the solar battery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#closed
+"""
+gate_18_camera_2 = """\
+Subject: Camera GH011 Offline
+
+
+Camera GH010 is currently offline.
+
+Camera is offline due the solar battery at the Gate 18 CCTV node being depleted of its charge.
+Camera should be restored after enough sunlight recharges the solar battery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#closed
+"""
+gate_18_subscriber_module = """\
+Subject: Gate 18 CCTV Node Subscriber Module is Offline
+
+
+Gate 18 CCTV Node Subscriber Module is Offline.
+
+Subscriber Module is offline due the solar battery at the Gate 18 CCTV node being depleted of its charge. 
+Subscriber Module should be restored after enough sunlight recharges the solar battery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#add 15min
+#assign Brian Uruka
+#category Networking
+#closed
+"""
+gate_18_cctv_node = """\
+Subject: Gate 18 CCTV Node is Offline
+
+
+Gate 18 CCTV Node is Offline.
+
+Node is offline due the solar battery at the node being depleted of its charge.
+Node should be restored after enough sunlight recharges the solar battery.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#closed
+"""
+
+# CHECKS
+with open('gate_18.csv') as file:
+	reader = csv.reader(file)
+	next(reader)  # Skip header row
+	for ip, device in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			pass
+		else:
+			print(node_notification)
+			
+context = ssl.create_default_context()
+# Send Notification for Gate 18 Camera 1
+with smtplib.SMTP(smtp_server, port) as server:
+	server.ehlo()
+	server.starttls(context=context)
+	server.ehlo()
+	server.login(user, password)
+	server.sendmail(
+		sender_email,
+		receiver_email,
+		gate_18_Camera_1,
+	)
+	sleep(15)
+	server.quit()
+# Send Notification for Gate 18 Camera 2
+with smtplib.SMTP(smtp_server, port) as server:
+	server.ehlo()
+	server.starttls(context=context)
+	server.ehlo()
+	server.login(user, password)
+	server.sendmail(
+		sender_email,
+		receiver_email,
+		gate_18_camera_2,
+	)
+	sleep(15)
+	server.quit()
+# Send Notifications for Gate 18 Subscriber Module
+with smtplib.SMTP(smtp_server, port) as server:
+	server.ehlo()
+	server.starttls(context=context)
+	server.ehlo()
+	server.login(user, password)
+	server.sendmail(
+		sender_email,
+		receiver_email,
+		gate_18_subscriber_module,
+	)
+	sleep(15)
+	server.quit()
+# Send Notifications for Gate 18 CCTV Node
+with smtplib.SMTP(smtp_server, port) as server:
+	server.ehlo()
+	server.starttls(context=context)
+	server.ehlo()
+	server.login(user, password)
+	server.sendmail(
+		sender_email,
+		receiver_email,
+		gate_18_cctv_node,
+	)
+	sleep(15)
+	server.quit()
