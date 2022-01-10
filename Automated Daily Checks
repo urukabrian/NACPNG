@@ -1,0 +1,297 @@
+import csv
+import smtplib
+import os
+import ssl
+from time import sleep
+
+port = input("Server Port:")  # For starttls
+smtp_server = input("Mail Server:")
+receiver_email input("Target Email:")
+sender_email = input("Email:")
+password = input("Password:")
+
+#  Email Message
+message = """\
+Subject: {device} is Offline
+
+
+Verification Checks are being carried out to determine root cause of outage.
+
+#add 15min
+#assign Brian Uruka
+#category Networking
+#open
+"""
+
+ra_cctv_message = """\
+Subject: {device} at {location} is Offline
+
+
+Verification Checks are being carried out to determine root cause of outage.
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#open
+"""
+
+pmia_cctv_message = """\
+Subject: Camera {device} is Offline
+
+
+Verification Checks are being carried out to determine root cause of outage.
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#open
+"""
+
+pmia_microwave_message = """\
+Subject: {device} at {node} is Offline
+
+
+Verification Checks are being carried out to determine root cause of outage.
+
+#add 15min
+#assign Brian Uruka
+#category Networking
+#open
+"""
+
+pmia_node_message = """\
+Subject: {node} CCTV node is Offline
+
+
+Verification Checks are being carried out to determine root cause of outage.
+
+#add 15min
+#assign Brian Uruka
+#category CCTV
+#open
+"""
+
+update = """\
+Ticket Processed for the issue: {device} Offline
+"""
+
+ra_cctv_update = """\
+Ticket Processed for the issue: {device} at {location} Offline
+"""
+
+pmia_cctv_update = """\
+Ticket Processed for the issue: Camera {device} is Offline
+"""
+
+pmia_microwave_update = """\
+Ticket Processed for the issue: {device} is Offline
+"""
+
+pmia_node_update = """\
+Ticket Processed for the issue: {device} CCTV Node Offline
+"""
+
+# TERMINAL OUTPUTS
+
+online = """\
+{device} is online}
+
+"""
+
+offline = """\
+{device} is DOWN
+"""
+
+ra_cctv_offline = """\
+{device} at {location} is DOWN
+"""
+
+pmia_cctv_offline = """\
+{device} at is DOWN
+"""
+
+pmia_microwave_offline = """\
+{device} for node {node} is DOWN
+"""
+
+pmia_node_offline = """\
+{node} CCTV node is DOWN
+"""
+
+
+pmia = """\
+Checking Network Devices for the Port Moresby International Airport
+"""
+
+pmia_microwave = """\
+Checking Microwave Radios for the Port Moresby International Airport
+"""
+
+ra = """\
+Checking Network Devices for the Regional Airports
+
+"""
+
+ra_cctv = """\
+Checking CCTV Cameras for the Regional Airport locations at Kagamuga, Goroka, and Hoskins.
+
+"""
+
+pmia_cctv = """\
+Checking CCTV Cameras for the Port Moresby International Airport.
+
+"""
+
+# CHECKS
+
+context = ssl.create_default_context()
+# FOR PMIA
+with open("pmia.csv") as file:
+	print(pmia)
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			print(offline.format(device=(''.join(str(elt) for elt in device))))
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					message.format(device=(''.join(str(elt) for elt in device)))
+					)
+				server.quit()
+			print(update.format(device=(''.join(str(elt) for elt in device))))
+			sleep(15)
+
+# FOR RA
+with open("pbn.csv") as file:
+	print(ra)
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			print(offline.format(device=(''.join(str(elt) for elt in device))))
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					message.format(device=(''.join(str(elt) for elt in device)))
+					)
+				server.quit()
+				print(update.format(device=(''.join(str(elt) for elt in device))))
+			sleep(15)
+
+with open("pbn_cctv.csv") as file:
+	print(ra_cctv)
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device, location in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			print(ra_cctv_offline.format(device=(''.join(str(elt) for elt in device)), location=(''.join(str(elt) for elt in location))))
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					ra_cctv_message.format(device=(''.join(str(elt) for elt in device)), location=(''.join(str(elt) for elt in location)))
+					)
+				server.quit()
+				print(ra_cctv_update.format(device=(''.join(str(elt) for elt in device)), location=(''.join(str(elt) for elt in location))))
+			sleep(15)
+
+with open("cctv_cameras.csv") as file:
+	print(pmia_cctv)
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			print(pmia_cctv_offline.format(device=(''.join(str(elt) for elt in device))))
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					pmia_cctv_message.format(device=(''.join(str(elt) for elt in device)))
+					)
+				server.quit()
+				print(pmia_cctv_update.format(device=(''.join(str(elt) for elt in device))))
+			sleep(15)
+
+with open("cctv_radio_links.csv") as file:
+	print(pmia_microwave)
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device, node in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			print(pmia_microwave_offline.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node))))
+			print(pmia_node_offline.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node))))
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					pmia_microwave_message.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node)))
+					)
+				server.quit()
+				print(pmia_microwave_update.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node))))
+			sleep(15)
+
+with open("cctv_radio_links.csv") as file:
+	reader = csv.reader(file)
+	next(reader)
+	for ip, device, node in reader:
+		response = os.popen(f"ping {ip}").read()
+		if "bytes=32" in response:
+			# print(online.format(device=(''.join(str(elt) for elt in device))))
+			pass
+		else:
+			with smtplib.SMTP(smtp_server, port) as server:
+				server.ehlo()
+				server.starttls(context=context)
+				server.ehlo()
+				server.login(user, password)
+				server.sendmail(
+					sender_email,
+					receiver_email,
+					pmia_node_message.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node)))
+					)
+				server.quit()
+				print(pmia_node_update.format(device=(''.join(str(elt) for elt in device)), node=(''.join(str(elt) for elt in node))))
+			sleep(15)
