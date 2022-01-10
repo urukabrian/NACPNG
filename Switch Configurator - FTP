@@ -1,10 +1,18 @@
 from __future__ import print_function
 from netmiko import ConnectHandler
 
+
+un = input("Username:")
+pwd = input("Password:")
+
+platform = 'cisco_ios'
+username = 'un'
+password = 'pwd'
+
 # CONSTANTS
 platform = 'cisco_ios'
-username = 'brian-root'
-password = 'Delta@170988'
+username = 'un'
+password = 'pwd'
 
 # COMMANDS
 with open('configure_ftp.txt') as f:
