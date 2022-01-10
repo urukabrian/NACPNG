@@ -1,0 +1,29 @@
+from __future__ import print_function
+from netmiko import ConnectHandler
+
+# CONSTANTS
+platform = 'cisco_ios'
+username = 'brian-root'
+password = 'Delta@170988'
+
+# COMMANDS
+with open('configure_ftp.txt') as f:
+	configure_ftp = f.read().splitlines()
+print(configure_ftp)
+
+# DEVICES
+with open('all_pmia_switches.txt') as f:
+	pmia_switches = f.read().splitlines()
+print(pmia_switches)
+
+# CODE EXECUTION
+for switch in pmia_switches:
+	net_connect = ConnectHandler(device_type=platform, ip=switch, username=username, password=password)
+	print('Working on', switch)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = net_connect.send_config_set(configure_ftp)
+	output += net_connect.save_config()
+	print(output)
+
+exit()
