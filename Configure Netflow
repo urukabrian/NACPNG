@@ -1,0 +1,167 @@
+from __future__ import print_function
+from netmiko import ConnectHandler
+
+# CONSTANTS
+un = input("Username:")
+pwd = input("Passowrd:")
+platform = 'cisco_ios'
+
+username = 'un'
+password = 'pwd'
+
+# COMMANDS
+with open('10_gig_port_swxs.txt') as a:
+	10_gig_port_swxs_commands = a.read().splitlines()
+print(10_gig_port_swxs_commands)
+with open('16_gig_port_swxs.txt') as b:
+	16_gig_port_swxs_commands = b.read().splitlines()
+print(16_gig_port_swxs_commands)
+with open('24_fast_port_swxs.txt') as c:
+	24_fast_port_swxs_commands = c.read().splitlines()
+print(24_fast_port_swxs_commands)
+with open('24_gig_port_swxs.txt') as d:
+	24_gig_port_swxs_commands = d.read().splitlines()
+print(24_gig_port_swxs_commands)
+with open('28_gig_port_swxs.txt') as e:
+	28_gig_port_swxs_commands = e.read().splitlines()
+print(28_gig_port_swxs_commands)
+with open('28_gig_port_swxs_leading_0.txt') as f:
+	28_gig_port_swxs_leading_0_commands = f.read().splitlines()
+print(28_gig_port_swxs_leading_0_commands)
+with open('48_fast_port_swxs.txt') as g:
+	48_fast_port_swxs_commands = g.read().splitlines()
+print(48_fast_port_swxs_commands)
+with open('48_gig_port_swxs.txt') as h:
+	48_gig_port_swxs_commands = h.read().splitlines()
+print(48_gig_port_swxs_commands)
+with open('50_gig_port_swxs.txt') as i:
+	50_gig_port_swxs_commands = i.read().splitlines()
+print(50_gig_port_swxs_commands)
+with open('52_gig_port_swxs.txt') as j:
+	52_gig_port_swxs_commands = j.read().splitlines()
+print(52_gig_port_swxs_commands)
+
+# DEVICES
+with open('10_gig_port_swxs_lst.txt') as k:
+	10_gig_port_swxs_list = k.read().splitlines()
+print(10_gig_port_swxs_list)
+with open('D:/The Path of The Jedi/Python/Scripts/Production/files/switch_listing/16_gig_port_swxs_lst.txt') as l:
+	16_gig_port_swxs_list = l.read().splitlines()
+print(16_gig_port_swxs_list)
+with open('D:/The Path of The Jedi/Python/Scripts/Production/files/switch_listing/24_fast_port_swxs_lst.txt') as m:
+	24_fast_port_swxs_list = m.read().splitlines()
+print(24_fast_port_swxs_list)
+with open('D:/The Path of The Jedi/Python/Scripts/Production/files/switch_listing/24_gig_port_swxs_lst.txt') as n:
+	24_gig_port_swxs_list = n.read().splitlines()
+print(24_gig_port_swxs_list)
+with open('D:/The Path of The Jedi/Python/Scripts/Production/files/switch_listing/28_gig_port_swxs_lst.txt') as o:
+	28_gig_port_swxs_list = o.read().splitlines()
+print(28_gig_port_swxs_list)
+with open('28_gig_port_swxs_leading_0_lst.txt') as p:
+	28_gig_port_swxs_leading_0_list = p.read().splitlines()
+print(28_gig_port_swxs_leading_0_list)
+with open('48_fast_port_swxs_lst.txt') as q:
+	48_fast_port_swxs_list = q.read().splitlines()
+print(48_fast_port_swxs_list)
+with open('48_gig_port_swxs_lst.txt') as r:
+	48_gig_port_swxs_list = r.read().splitlines()
+print(48_gig_port_swxs_list)
+with open('50_gig_port_swxs_lst.txt') as s:
+	50_gig_port_swxs_list = s.read().splitlines()
+print(50_gig_port_swxs_list)
+with open('52_gig_port_swxs_lst.txt') as t:
+	52_gig_port_swxs_list = t.read().splitlines()
+print(52_gig_port_swxs_list)
+
+# CODE EXECUTION
+for swx in 10_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(10_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 16_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(16_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 24_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(24_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 24_fast_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(24_fast_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 28_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(28_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 28_gig_port_swxs_leading_0_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(28_gig_port_swxs_leading_0_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 48_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(48_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 48_fast_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(48_fast_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 50_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(50_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+for swx in 52_gig_port_swxs_list:
+	net_connect = ConnectHandler(device_type=platform, ip=swx, username=username, password=password)
+	print('Working on', host)
+	print('Applying Configuration Changes')
+	output = net_connect.send_command('terminal length 0')
+	output = device.send_config_set(52_gig_port_swxs_commands)
+	output += net_connect.save_config()
+	print(output)
+
+exit()
