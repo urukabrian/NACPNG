@@ -1,0 +1,161 @@
+# RESTORE WIRELESS NETWORK FOR NAC PMIA
+
+#IMPORTS
+
+from time import *
+import os
+import netmiko
+import paramiko
+
+#CONSTANTS
+ip = input("Device IP:")
+wcl = input("Wireless Controller IP:")
+ise = input("Identity Services Engine IP:")
+un = input("Username:")
+pwd = input("Password:")
+
+iosv_l2 = {'device_type':
+			'cisco_ios',
+			'ip':'{ip}',
+			'username':'{un}',
+			'password':'{pwd}}'
+			}
+
+#STATEMENTS
+wcl_login = "Attempting to Log into Wireless Controller"
+ise_login = "Attempting to Log into Identity Services Engine"
+ise_online = "Checking if Identity Servies Engine is Online"
+wcl_online = "Checking if Wireless Controller is Online"
+
+first_good = "First Attempt Successful"
+second_good = "Second Attempt Successful"
+third_good = "Third Attempt Successful"
+fourth_good = "Fourth Attempt Successful"
+fifth_good = "Final Attempt Successful"
+
+first_bad = "First Attempt Unsuccessful"
+second_bad = "Second Attempt Unsuccessful"
+third_bad = "Third Attempt Unsuccessful"
+fourth_bad = "Fourth Attempt Unsuccessful"
+fifth_bad = "Final Attempt Unsuccessful"
+
+device_offline = "More Than Three Attempts Done, Please Check Network Connectivity to Device and if it is Powered On"
+login_success = "Login Sucessfull"
+reboot = "Rebooting 2.5Ghz and 5Ghz Radios"
+ntp_term = "Setting NTP Via Terminal"
+ntp_via_web = "Setting NTP Via Web GUI"
+
+timestamping = "Collecting Time Stamps from ISE and WCL"
+timechecking = "Checking Time Stamps"
+synchronization = "Times Match"
+nil_saynchronization = "Times Do Not Match"
+
+controller = "Exiting Program"
+controller = "Program Started at {datetime.now}"
+controller = "Program Ended at {datetime.now}r"
+
+insync = "Controller and NTP Server are Synchronized"
+outofsync = "Controller and NTP Server are Not Synchronized"
+
+
+controller = "Logging Into Wireless Controller"
+controller = "Logging Into Wireless Controller"
+
+#EXECUTIONS
+
+
+
+#Classes
+
+class Uptime:																	# Uptime Check
+	def _init_(self):
+		pass
+	def ping(self,ip):
+		count = 0
+		while count <= 5
+			response = os.popen(f"ping {ip}").read()
+			count+= 1
+			if count = 1:
+				if "bytes=32" in response:
+					print(first_good)
+				else:
+					print(first_bad)
+					sleep(5)
+			elif count =2:
+				if "bytes=32" in response:
+					print(second_good)
+				else:
+					print(second_bad)
+					sleep(5)
+			elif count = 3:
+				if "bytes=32" in response:
+					print(third_good)
+				else:
+					print(third_bad)
+					sleep(5)
+			elif count = 4:
+				if "bytes=32" in response:
+					print(fourth_good)
+				else:
+					print(fourth_bad)
+					sleep(5)
+			elif count = 5:
+				if "bytes=32" in response:
+					print(fifth_good)
+				else:
+					print(fifth_bad)
+
+class Reboot: 																	#REBOOT RADIOS
+	def _init_(self):
+		net_connect = ConnectHandler(**ios_l2)	#net_connect.find_prompt()
+		configure_terminal = ["configure terminal"]
+		configure_terminal = ["ap dot11 5ghz shutdown"]
+		configure_terminal = ["ap dot11 24ghz shutdown"]
+		configure_terminal = ["no ap dot11 5ghz shutdown"]
+		configure_terminal = ["no ap dot11 24ghz shutdown"]
+		configure_terminal = ["write mem"]
+		configure_terminal = ["copy run start"]
+		configure_terminal = ["reload"]
+		configure_terminal = ["\n"]
+		output = net_connect.send_config_set(config_commands)
+		print(reboot)
+
+class TimeStamp:																#Timestamp Print
+	def _init_(self):
+		print(timestamping)
+		timestamp = open(r'{ip}.txt', 'w')
+			response = os.popen(f"ping {ip}").read()
+			net_connect = ConnectHandler(**ios_l2)	#net_connect.find_prompt()
+			configure_terminal = ["show clock"]
+			output = net_connect.send_config_set(config_commands)
+			print(configure_terminal)
+		timestamp.close()	
+
+class TimeCheck:																#Synchronization Check
+	def _init_(self):
+		print(timechecking)
+		timecheck1 = open(r'{ip}.txt'.readline(4), 'r')
+		timecheck2 = open(r'{ip}.txt'.readline(4), 'r')
+			if timecheck1 == timecheck2:
+				print(insync)
+			else:
+				print(outofsync)
+
+class NTP:																		#NTP COnfiguration
+	def _init_(self):
+		print(ntp_term)
+		response = os.popen(f"ping {ip}").read()
+		net_connect = ConnectHandler(**ios_l2)	#net_connect.find_prompt()
+		configure_terminal = ["configure terminal"]
+		configure_terminal = ["ntp server 192.168.110.10"]
+		configure_terminal = ["ntp peer 192.168.101.1"]
+		configure_terminal = ["end"]
+		configure_terminal = ["show ntp associations"]
+		configure_terminal = ["write mem"]
+		configure_terminal = ["copy run start"]
+		output = net_connect.send_config_set(config_commands)
+		
+
+class BrowserSourceCheck:
+	def _init_(self):
+		pass	
